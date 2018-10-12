@@ -22,12 +22,9 @@ public class TopicDao extends NamedQuestionFieldDao<Topic> {
      *                      {@link QuestionDao#removeAllFromTopic(Integer)}), the
      *                      database connection or the DELETE-query fails
      */
+    @Override
     public void remove(Integer id, QuestionDao questions) throws SQLException {
         questions.removeAllFromTopic(id);
-        
-        try (val connection = getDb().getConnection(); val stmt = connection.prepareStatement("DELETE FROM " + getTableName() + " WHERE id=?")) {
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
-        }
+        super.remove(id, questions);
 	}
 }

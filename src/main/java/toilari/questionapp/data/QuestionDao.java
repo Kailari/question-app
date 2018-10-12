@@ -26,6 +26,22 @@ public class QuestionDao extends SimpleIntPKDao<Question> {
     }
 
     /**
+     * Removes a question and all of its answers
+     * 
+     * @param id      ID of the question to remove
+     * @param answers {@link AnswerDao} to use for removing associated answers
+     */
+    public void remove(int id, AnswerDao answers) throws SQLException {
+        answers.removeAllForQuestion(id);
+
+        try (val connection = getDb().getConnection();
+                val stmt = connection.prepareStatement("DELETE FROM " + getTableName() + " WHERE id=?")) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+
+    /**
      * Removes all questions that belong to the given topic
      * 
      * @param topicId ID of the topic which questions to remove
@@ -77,7 +93,6 @@ public class QuestionDao extends SimpleIntPKDao<Question> {
         }
     }
 
-
     /**
      * Gets all questions for a course
      * 
@@ -115,4 +130,5 @@ public class QuestionDao extends SimpleIntPKDao<Question> {
         val topic = topics.find(res.getInt("topic_id"));
         return new Question(id, course, topic, question);
     }
+
 }

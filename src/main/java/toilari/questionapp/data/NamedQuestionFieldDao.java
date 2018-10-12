@@ -21,6 +21,14 @@ public abstract class NamedQuestionFieldDao<TData extends NamedQuestionField> ex
         this.ctor = ctor;
     }
 
+    public void remove(Integer id, QuestionDao questions) throws SQLException {
+        try (val connection = getDb().getConnection();
+                val stmt = connection.prepareStatement("DELETE FROM " + getTableName() + " WHERE id=?")) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+
     @Override
     protected TData newData(ResultSet res) throws SQLException {
         val id = res.getInt("id");

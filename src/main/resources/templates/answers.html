@@ -1,0 +1,50 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Answer Listing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+</head>
+
+<body>
+    <h1>Answers</h1>
+
+    <h2>List of all Answers</h2>
+    <ul>
+        <li th:each="answer : ${answers}">
+            <span th:text="${answer.id}"></span>
+            <span th:text="${answer.text}"></span>
+            <span th:text="${answer.correct} ? 'Correct' : 'Wrong'"></span>
+        </li>
+    </ul>
+
+    <h2>Add/remove Questions</h2>
+    <form method="POST" action="/answers">
+        <span>Question:</span><br />
+        <select name="question_id">
+            <option value="">Select Question</option>
+            <option th:each="question : ${questions}" th:value="${question.id}" th:text="${question.question}"></option>
+        </select><br />
+        
+        <span>Answer:</span><br />
+        <input type="text" name="text" /><br />
+
+        <input type="checkbox" name="correct" value="correct" />Is Correct<br />
+
+        <input type="submit" value="Add" /><br />
+    </form>
+
+    <form method="POST" action="/delete/answer">
+        <span>ID:</span><br />
+        <select name="id">
+            <option value="">Select Answer to remove</option>
+            <option th:each="answer : ${answers}" th:value="${answer.id}" th:text="${answer.text}"></option>
+        </select><br />
+        <input type="submit" value="Remove" /><br />
+    </form>
+</body>
+
+</html>

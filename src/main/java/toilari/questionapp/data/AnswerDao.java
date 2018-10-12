@@ -25,6 +25,22 @@ public class AnswerDao extends SimpleIntPKDao<Answer> {
         this.questions = questions;
     }
 
+    public void remove(int id) throws SQLException {
+        try (val connection = getDb().getConnection();
+                val stmt = connection.prepareStatement("DELETE FROM " + getTableName() + " WHERE id=?")) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+
+    public void removeAllForQuestion(int id) throws SQLException {
+        try (val connection = getDb().getConnection();
+                val stmt = connection.prepareStatement("DELETE FROM " + getTableName() + " WHERE question_id=?")) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+
     public List<Answer> getAnswersForQuestionId(int questionId) throws SQLException {
         try (val connection = getDb().getConnection();
                 val stmt = connection.prepareStatement("SELECT * FROM " + getTableName() + " WHERE question_id=?")) {
@@ -60,5 +76,5 @@ public class AnswerDao extends SimpleIntPKDao<Answer> {
         stmt.setInt(1, data.getQuestion().getId());
         stmt.setString(2, data.getText());
         stmt.setBoolean(3, data.isCorrect());
-	}
+    }
 }

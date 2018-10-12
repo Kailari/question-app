@@ -3,17 +3,22 @@ package toilari.questionapp;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.val;
 import lombok.extern.slf4j.Slf4j;
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
+import toilari.questionapp.data.Answer;
 import toilari.questionapp.data.AnswerDao;
 import toilari.questionapp.data.Course;
 import toilari.questionapp.data.CourseDao;
+import toilari.questionapp.data.Question;
 import toilari.questionapp.data.QuestionDao;
 import toilari.questionapp.data.Topic;
 import toilari.questionapp.data.TopicDao;
 import toilari.questionapp.database.Database;
+import toilari.questionapp.view.NamedQuestionFieldRoutes;
+import toilari.questionapp.view.QuestionRoutes;
 
 /**
  * Main application
@@ -30,72 +35,55 @@ public class QuestionApp {
         QuestionDao questions = new QuestionDao(db, courses, topics);
         AnswerDao answers = new AnswerDao(db, questions);
 
-        Spark.get("/questions", (res, req) -> {
-            Map map = new HashMap<>();
+        Spark.get("/questions", QuestionRoutes.get(questions, courses, topics), new ThymeleafTemplateEngine());
+        Spark.post("/questions", QuestionRoutes.postAdd(questions, courses, topics));
+        Spark.post("/delete/question", QuestionRoutes.postDelete(questions, answers));
 
-            return new ModelAndView(map, "questions");
+        Spark.get("/topics", NamedQuestionFieldRoutes.get("Topic", topics), new ThymeleafTemplateEngine());
+        Spark.post("/topics", NamedQuestionFieldRoutes.postAdd("Topic", topics, Topic::new));
+        Spark.post("/delete/topic", NamedQuestionFieldRoutes.postDelete("Topic", topics, questions));
+
+        Spark.get("/courses", NamedQuestionFieldRoutes.get("Course", courses), new ThymeleafTemplateEngine());
+        Spark.post("/courses", NamedQuestionFieldRoutes.postAdd("Course", courses, Course::new));
+        Spark.post("/delete/course", NamedQuestionFieldRoutes.postDelete("Course", courses, questions));
+
+        Spark.get("/answers", (req, res) -> {
+            val map = new HashMap<>();
+            map.put("questions", questions.findAll());
+            map.put("answers", answers.findAll());
+
+            return new ModelAndView(map, "answers");
         }, new ThymeleafTemplateEngine());
 
-
-        Spark.get("/topics", (res, req) -> {
-            Map map = new HashMap<>();
-            map.put("objectName", "Topic");
-            map.put("objects", topics.findAll());
-            map.put("postAction", "/topics");
-            map.put("deleteAction", "/delete/topic");
-
-            return new ModelAndView(map, "topicscourses");
-        }, new ThymeleafTemplateEngine());
-
-        Spark.post("/topics", (res, req) -> {
-            String name = res.queryParams("name");
-            topics.add(new Topic(name));
-
-            req.redirect("/topics");
-            return "";
-        });
-
-        Spark.post("/delete/topic", (res, req) -> {
+        Spark.post("/answers", (req, res) -> {
             try {
-                int id = Integer.parseInt(res.queryParams("id"));
-                topics.remove(id, questions);
+                val questionId = Integer.parseInt(req.queryParams("question_id"));
+                val text = req.queryParams("text");
+                val correct = req.queryParams("correct") != null;
+
+                val question = questions.find(questionId);
+                if (question == null) {
+                    return "Invalid request: Invalid question ID!";
+                }
+
+                answers.add(new Answer(question, text, correct));
             } catch (NumberFormatException ignored) {
             }
 
-            req.redirect("/topics");
+            res.redirect("/answers");
             return "";
         });
 
-
-        Spark.get("/courses", (res, req) -> {
-            Map map = new HashMap<>();
-            map.put("objectName", "Course");
-            map.put("objects", courses.findAll());
-            map.put("postAction", "/courses");
-            map.put("deleteAction", "/delete/course");
-
-            return new ModelAndView(map, "topicscourses");
-        }, new ThymeleafTemplateEngine());
-
-        Spark.post("/courses", (res, req) -> {
-            String name = res.queryParams("name");
-            courses.add(new Course(name));
-
-            req.redirect("/courses");
-            return "";
-        });
-
-        Spark.post("/delete/course", (res, req) -> {
+        Spark.post("/delete/answer", (req, res) -> {
             try {
-                int id = Integer.parseInt(res.queryParams("id"));
-                courses.remove(id, questions);
+                val id = Integer.parseInt(req.queryParams("id"));
+                answers.remove(id);
             } catch (NumberFormatException ignored) {
             }
 
-            req.redirect("/courses");
+            res.redirect("/answers");
             return "";
         });
-
 
         Spark.get("*", (res, req) -> {
             // TODO: Index page

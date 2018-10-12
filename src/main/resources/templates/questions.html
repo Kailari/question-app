@@ -10,7 +10,44 @@
 </head>
 
 <body>
-    <h1>Hello World!</h1>
+    <h1>Questions</h1>
+
+    <h2>List of all Questions</h2>
+    <ul>
+        <li th:each="question : ${questions}">
+            <span th:text="${question.id}"></span>
+            <span th:text="${question.question}"></span>
+        </li>
+    </ul>
+
+    <h2>Add/remove Questions</h2>
+    <form method="POST" action="/questions">
+        <span>Name:</span><br />
+        <input type="text" name="question" /><br />
+
+        <span>Course:</span><br />
+        <select name="course_id">
+            <option value="">Select Course</option>
+            <option th:each="course : ${courses}" th:value="${course.id}" th:text="${course.name}"></option>
+        </select><br />
+
+        <span>Topic:</span><br />
+        <select name="topic_id">
+            <option value="">Select Topic</option>
+            <option th:each="topic : ${topics}" th:value="${topic.id}" th:text="${topic.name}"></option>
+        </select><br />
+
+        <input type="submit" value="Add" /><br />
+    </form>
+
+    <form method="POST" action="/delete/question">
+        <span>ID:</span><br />
+        <select name="id">
+            <option value="">Select Question to remove</option>
+            <option th:each="question : ${questions}" th:value="${question.id}" th:text="${question.question}"></option>
+        </select><br />
+        <input type="submit" value="Remove" /><br />
+    </form>
 </body>
 
 </html>
