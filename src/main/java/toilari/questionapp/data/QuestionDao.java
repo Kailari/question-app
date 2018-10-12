@@ -3,6 +3,7 @@ package toilari.questionapp.data;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.val;
@@ -24,12 +25,79 @@ public class QuestionDao extends SimpleIntPKDao<Question> {
         this.topics = topics;
     }
 
-    public List<Question> getQuestionsForCourse(int id) {
-        return null;
+    /**
+     * Removes all questions that belong to the given topic
+     * 
+     * @param topicId ID of the topic which questions to remove
+     * @throws SQLException If the connection to the database or the DELETE-update
+     *                      query fails
+     */
+    public void removeAllFromTopic(Integer topicId) throws SQLException {
+        try (val connection = getDb().getConnection();
+                val stmt = connection.prepareStatement("DELETE FROM " + getTableName() + " WHERE topic_id=?")) {
+            stmt.setInt(1, topicId);
+            stmt.executeUpdate();
+        }
     }
 
-    public List<Question> getQuestionsForTopic(int id) {
-        return null;
+    /**
+     * Removes all questions that belong to the given course
+     * 
+     * @param courseId ID of the course which questions to remove
+     * @throws SQLException If the connection to the database or the DELETE-update
+     *                      query fails
+     */
+    public void removeAllFromCourse(Integer courseId) throws SQLException {
+        try (val connection = getDb().getConnection();
+                val stmt = connection.prepareStatement("DELETE FROM " + getTableName() + " WHERE course_id=?")) {
+            stmt.setInt(1, courseId);
+            stmt.executeUpdate();
+        }
+    }
+
+    /**
+     * Gets all questions for a topic
+     * 
+     * @param topicId ID of the topic which questions to get
+     * @throws SQLException If the connection to the database or the SELECT-query
+     *                      fails.
+     */
+    public List<Question> getQuestionsForTopic(Integer topicId) throws SQLException {
+        try (val connection = getDb().getConnection();
+                val stmt = connection.prepareStatement("SELECT * FROM " + getTableName() + " WHERE topic_id=?")) {
+            stmt.setInt(1, topicId);
+            val res = stmt.executeQuery();
+            val results = new ArrayList<Question>();
+
+            while (res.next()) {
+                results.add(newData(res));
+            }
+
+            return results;
+        }
+    }
+
+
+    /**
+     * Gets all questions for a course
+     * 
+     * @param courseId ID of the course which questions to get
+     * @throws SQLException If the connection to the database or the SELECT-query
+     *                      fails.
+     */
+    public List<Question> getQuestionsForCourse(Integer courseId) throws SQLException {
+        try (val connection = getDb().getConnection();
+                val stmt = connection.prepareStatement("SELECT * FROM " + getTableName() + " WHERE course_id=?")) {
+            stmt.setInt(1, courseId);
+            val res = stmt.executeQuery();
+            val results = new ArrayList<Question>();
+
+            while (res.next()) {
+                results.add(newData(res));
+            }
+
+            return results;
+        }
     }
 
     @Override
