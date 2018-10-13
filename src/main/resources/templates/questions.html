@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Question Listing</title>
+    <title>Question List</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
 </head>
@@ -12,42 +12,55 @@
 <body>
     <h1>Questions</h1>
 
-    <h2>List of all Questions</h2>
-    <ul>
-        <li th:each="question : ${questions}">
-            <span th:text="${question.id}"></span>
-            <span th:text="${question.question}"></span>
-        </li>
-    </ul>
+    <h2>List of all questions</h2>
 
-    <h2>Add/remove Questions</h2>
-    <form method="POST" action="/questions">
-        <span>Name:</span><br />
-        <input type="text" name="question" /><br />
-
-        <span>Course:</span><br />
-        <select name="course_id">
-            <option value="">Select Course</option>
-            <option th:each="course : ${courses}" th:value="${course.id}" th:text="${course.name}"></option>
-        </select><br />
-
-        <span>Topic:</span><br />
-        <select name="topic_id">
-            <option value="">Select Topic</option>
-            <option th:each="topic : ${topics}" th:value="${topic.id}" th:text="${topic.name}"></option>
-        </select><br />
-
-        <input type="submit" value="Add" /><br />
-    </form>
-
-    <form method="POST" action="/delete/question">
-        <span>ID:</span><br />
-        <select name="id">
-            <option value="">Select Question to remove</option>
-            <option th:each="question : ${questions}" th:value="${question.id}" th:text="${question.question}"></option>
-        </select><br />
-        <input type="submit" value="Remove" /><br />
-    </form>
+    <table style="width:100%">
+        <tr>
+            <th>ID</th>
+            <th>Course</th>
+            <th>Topic</th>
+            <th>Question</th>
+            <th>Controls</th>
+        </tr>
+        <tr th:each="question : ${questions}">
+            <td th:text="${question.id}"></td>
+            <td>
+                <a th:href="${question.course.infoUrl}" th:text="${question.course.name}">Course</a>
+            </td>
+            <td>
+                <a th:href="${question.topic.infoUrl}" th:text="${question.topic.name}">Topic</a>
+            </td>
+            <td> <a th:href="${question.infoUrl}" th:text="${question.question}">WHAT?</a></td>
+            <td>
+                <form method="POST" th:action="${question.deleteUrl}">
+                    <input type="submit" value="Delete" />
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <form method="POST" action="/questions">
+                <td>Add new</td>
+                <td>
+                    <select name="course_id">
+                        <option value="">Select Course</option>
+                        <option th:each="course : ${courses}" th:value="${course.id}" th:text="${course.name}"></option>
+                    </select>
+                </td>
+                <td>
+                    <select name="topic_id">
+                        <option value="">Select Topic</option>
+                        <option th:each="topic : ${topics}" th:value="${topic.id}" th:text="${topic.name}"></option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" name="question" />
+                </td>
+                <td>
+                    <input type="submit" value="Add" />
+                </td>
+            </form>
+        </tr>
+    </table>
 </body>
 
 </html>

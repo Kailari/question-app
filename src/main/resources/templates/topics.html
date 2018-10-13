@@ -23,7 +23,7 @@
         <tr th:each="topic : ${topics}">
             <td th:text="${topic.id}"></td>
             <td>
-                <a th:href="${topic.infoUrl}" th:text="${topic.name}">Course</a>
+                <a th:href="${topic.infoUrl}" th:text="${topic.name}">Topics</a>
             </td>
             <td>
                 <form method="POST" th:action="${topic.deleteUrl}">

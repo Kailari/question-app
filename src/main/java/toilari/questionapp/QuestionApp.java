@@ -11,7 +11,7 @@ import toilari.questionapp.database.Database;
 import toilari.questionapp.view.CoursePage;
 import toilari.questionapp.view.CoursesPage;
 import toilari.questionapp.view.QuestionPage;
-import toilari.questionapp.view.QuestionRoutes;
+import toilari.questionapp.view.QuestionsPage;
 import toilari.questionapp.view.TopicPage;
 import toilari.questionapp.view.TopicsPage;
 
@@ -30,8 +30,8 @@ public class QuestionApp {
         QuestionDao questions = new QuestionDao(db, courses, topics);
         AnswerDao answers = new AnswerDao(db, questions);
 
-        Spark.get("/questions", QuestionRoutes.get(questions, courses, topics), new ThymeleafTemplateEngine());
-        Spark.post("/questions", QuestionRoutes.postAdd(questions, courses, topics));
+        Spark.get("/questions", QuestionsPage.getFullQuestionList(questions, courses, topics), new ThymeleafTemplateEngine());
+        Spark.post("/questions", QuestionsPage.postAddQuestion(questions, courses, topics));
 
         Spark.get("/topics", TopicsPage.getTopicListPage(topics), new ThymeleafTemplateEngine());
         Spark.post("/topics", TopicsPage.postAdd(topics));
