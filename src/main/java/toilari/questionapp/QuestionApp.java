@@ -53,6 +53,11 @@ public class QuestionApp {
         Spark.post("/questions/:id/answer", QuestionPage.postAddAnswer(questions, answers));
         Spark.post("/delete/answer/:id", QuestionPage.postDeleteAnswer(answers, questions));
 
+        Spark.get("*", (req, res) -> {
+            res.redirect("/questions");
+            return "";
+        });
+
         LOG.info("Application running");
     }
 
