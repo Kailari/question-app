@@ -36,11 +36,11 @@ public class CoursesPage {
         };
     }
 
-    public static Route postDeleteCourse(CourseDao courses, QuestionDao questions) {
+    public static Route postDeleteCourse(CourseDao courses, QuestionDao questions, AnswerDao answers) {
         return (req, res) -> {
             try {
                 val id = Integer.parseInt(req.params("id"));
-                courses.remove(id, questions);
+                courses.remove(id, questions, answers);
             } catch (NumberFormatException ignored) {
             }
 

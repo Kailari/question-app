@@ -42,36 +42,6 @@ public class QuestionDao extends SimpleIntPKDao<Question> {
     }
 
     /**
-     * Removes all questions that belong to the given topic
-     * 
-     * @param topicId ID of the topic which questions to remove
-     * @throws SQLException If the connection to the database or the DELETE-update
-     *                      query fails
-     */
-    public void removeAllFromTopic(Integer topicId) throws SQLException {
-        try (val connection = getDb().getConnection();
-                val stmt = connection.prepareStatement("DELETE FROM " + getTableName() + " WHERE topic_id=?")) {
-            stmt.setInt(1, topicId);
-            stmt.executeUpdate();
-        }
-    }
-
-    /**
-     * Removes all questions that belong to the given course
-     * 
-     * @param courseId ID of the course which questions to remove
-     * @throws SQLException If the connection to the database or the DELETE-update
-     *                      query fails
-     */
-    public void removeAllFromCourse(Integer courseId) throws SQLException {
-        try (val connection = getDb().getConnection();
-                val stmt = connection.prepareStatement("DELETE FROM " + getTableName() + " WHERE course_id=?")) {
-            stmt.setInt(1, courseId);
-            stmt.executeUpdate();
-        }
-    }
-
-    /**
      * Gets all questions for a topic
      * 
      * @param topicId ID of the topic which questions to get

@@ -8,6 +8,7 @@ import lombok.val;
 import spark.ModelAndView;
 import spark.Route;
 import spark.TemplateViewRoute;
+import toilari.questionapp.data.AnswerDao;
 import toilari.questionapp.data.QuestionDao;
 import toilari.questionapp.data.Topic;
 import toilari.questionapp.data.TopicDao;
@@ -35,11 +36,11 @@ public class TopicsPage {
         };
     }
 
-    public static Route postDeleteTopic(TopicDao topics, QuestionDao questions) {
+    public static Route postDeleteTopic(TopicDao topics, QuestionDao questions, AnswerDao answers) {
         return (req, res) -> {
             try {
                 val id = Integer.parseInt(req.params("id"));
-                topics.remove(id, questions);
+                topics.remove(id, questions, answers);
             } catch (NumberFormatException ignored) {
             }
 

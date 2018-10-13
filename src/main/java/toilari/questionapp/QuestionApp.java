@@ -35,7 +35,7 @@ public class QuestionApp {
 
         Spark.get("/topics", TopicsPage.getTopicListPage(topics), new ThymeleafTemplateEngine());
         Spark.post("/topics", TopicsPage.postAdd(topics));
-        Spark.post("/delete/topic/:id", TopicsPage.postDeleteTopic(topics, questions));
+        Spark.post("/delete/topic/:id", TopicsPage.postDeleteTopic(topics, questions, answers));
 
         Spark.get("/topics/:id", TopicPage.getSingleTopicPage(courses, topics, questions), new ThymeleafTemplateEngine());
         Spark.post("/topics/:id/question", TopicPage.postAddQuestion(courses, questions, topics));
@@ -43,7 +43,7 @@ public class QuestionApp {
 
         Spark.get("/courses", CoursesPage.getCourseListPage(courses), new ThymeleafTemplateEngine());
         Spark.post("/courses", CoursesPage.postAdd(courses));
-        Spark.post("/delete/course/:id", CoursesPage.postDeleteCourse(courses, questions));
+        Spark.post("/delete/course/:id", CoursesPage.postDeleteCourse(courses, questions, answers));
         
         Spark.get("/courses/:id", CoursePage.getSingleCoursePage(courses, topics, questions), new ThymeleafTemplateEngine());
         Spark.post("/courses/:id/question", CoursePage.postAddQuestion(courses, questions, topics));
