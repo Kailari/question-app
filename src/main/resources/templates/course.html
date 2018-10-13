@@ -1,0 +1,57 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Course List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--link rel="stylesheet" type="text/css" media="screen" href="main.css" /-->
+</head>
+
+<body>
+    <h1 th:text="${course.name}">Course name</h1>
+    <a href="/courses">All courses</a>
+
+    <h2>Questions on this course</h2>
+
+    <table style="width:100%">
+        <tr>
+            <th>ID</th>
+            <th>Topic</th>
+            <th>Question</th>
+            <th>Delet this</th>
+        </tr>
+        <tr th:each="question : ${questions}">
+            <td th:text="${question.id}"></td>
+            <td><a th:href="${question.topic.infoUrl}" th:text="${question.topic}">Topic</a></td>
+            <td>
+                <a th:href="${question.infoUrl}" th:text="${question.question}">Course</a>
+            </td>
+            <td>
+                <form method="POST" th:action="${question.deleteUrl} + '?redirect=/courses/' + ${course.id}">
+                    <input type="submit" value="Delete" />
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <form method="POST" th:action="${addAction}">
+                <td>Add new</td>
+                <td>
+                    <select name="topic_id">
+                        <option value="">Select Topic</option>
+                        <option th:each="topic : ${topics}" th:value="${topic.id}" th:text="${topic.name}"></option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" name="question" />
+                </td>
+                <td>
+                    <input type="submit" name="Add" />
+                </td>
+            </form>
+        </tr>
+    </table>
+</body>
+
+</html>

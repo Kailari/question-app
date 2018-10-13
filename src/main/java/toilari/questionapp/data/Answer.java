@@ -16,6 +16,10 @@ public class Answer {
     private String text;
     private boolean correct;
 
+    public String getDeleteUrl() {
+        return "/delete/answer/" + id;
+    }
+
     public Answer(QuestionDao questions, int questionId, String text, boolean correct) throws SQLException {
         this(questions.find(questionId), text, correct);
     }

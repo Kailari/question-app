@@ -21,6 +21,14 @@ public class Question {
         return dao.getAnswersForQuestionId(this.id);
     }
 
+    public String getInfoUrl() {
+        return "/questions/" + id;
+    }
+
+    public String getDeleteUrl() {
+        return "/delete/question/" + id;
+    }
+
     public Question(Course course, Topic topic, String question) {
         // Call AllArgsConstructor
         this(-1, course, topic, question);

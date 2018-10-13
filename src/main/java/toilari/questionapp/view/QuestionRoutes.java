@@ -21,7 +21,7 @@ import toilari.questionapp.data.TopicDao;
 public class QuestionRoutes {
     public static TemplateViewRoute get(QuestionDao questions, CourseDao courses, TopicDao topics) {
         return (req, res) -> {
-            val map = new HashMap<>();
+            val map = new HashMap<String, Object>();
             map.put("questions", questions.findAll());
             map.put("courses", courses.findAll());
             map.put("topics", topics.findAll());
@@ -32,6 +32,7 @@ public class QuestionRoutes {
 
     public static Route postAdd(QuestionDao questions, CourseDao courses, TopicDao topics) {
         return (req, res) -> {
+            System.out.println("Question add request: " + req.toString());
             try {
                 val courseId = Integer.parseInt(req.queryParams("course_id"));
                 val topicId = Integer.parseInt(req.queryParams("topic_id"));
@@ -55,7 +56,8 @@ public class QuestionRoutes {
             } catch (NumberFormatException ignored) {
             }
 
-            res.redirect("/questions");
+            String redirect = req.queryParams("redirect");
+            res.redirect(redirect == null ? "/questions" : redirect);
             return "";
         };
     }
@@ -63,13 +65,24 @@ public class QuestionRoutes {
     public static Route postDelete(QuestionDao questions, AnswerDao answers) {
         return (req, res) -> {
             try {
-                val id = Integer.parseInt(req.queryParams("id"));
+                val id = Integer.parseInt(req.params("id"));
                 questions.remove(id, answers);
             } catch (NumberFormatException ignored) {
             }
 
-            res.redirect("/questions");
+            String redirect = req.queryParams("redirect");
+            res.redirect(redirect == null ? "/questions" : redirect);
             return "";
         };
     }
+
+
+	public static TemplateViewRoute getOne(QuestionDao questions, CourseDao courses, TopicDao topics, AnswerDao answers) {
+        return (req, res) -> {
+            val map = new HashMap<String, Object>();
+            
+
+            return new ModelAndView(map, "");
+        };
+	}
 }

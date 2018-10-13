@@ -12,6 +12,14 @@ public class Course extends NamedQuestionField {
         return dao.getQuestionsForCourse(getId());
     }
 
+    public String getDeleteUrl() {
+        return "/delete/course/" + getId();
+    }
+
+    public String getInfoUrl() {
+        return "/courses/" + getId();
+    }
+
     public Course(int id, String name) {
         super(id, name);
     }

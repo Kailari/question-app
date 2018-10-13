@@ -12,6 +12,14 @@ public class Topic extends NamedQuestionField {
         return dao.getQuestionsForTopic(getId());
     }
 
+    public String getDeleteUrl() {
+        return "/delete/topic/" + getId();
+    }
+
+    public String getInfoUrl() {
+        return "/topics/" + getId();
+    }
+
     public Topic(int id, String name) {
         super(id, name);
     }

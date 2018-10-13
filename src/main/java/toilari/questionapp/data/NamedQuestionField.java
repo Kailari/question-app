@@ -22,4 +22,9 @@ public abstract class NamedQuestionField {
         // Call AllArgsConstructor
         this(-1, name);
     }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

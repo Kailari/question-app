@@ -1,0 +1,44 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Topic List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+</head>
+
+<body>
+    <h1>Topics</h1>
+
+    <h2>List of all topics</h2>
+
+    <table style="width:100%">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Delet this</th>
+        </tr>
+        <tr th:each="topic : ${topics}">
+            <td th:text="${topic.id}"></td>
+            <td>
+                <a th:href="${topic.infoUrl}" th:text="${topic.name}">Course</a>
+            </td>
+            <td>
+                <form method="POST" th:action="${topic.deleteUrl}">
+                    <input type="submit" value="Delete" />
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <h2>Controls</h2>
+    <form method="POST" action="/topics">
+        <span>Add a new topic:</span><br />
+        <input type="text" name="name" />
+        <input type="submit" value="Add" /><br />
+    </form>
+</body>
+
+</html>
