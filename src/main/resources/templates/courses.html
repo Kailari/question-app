@@ -6,39 +6,47 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Course List</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../public/styles/main.css" th:href="'/styles/main.css'" />
 </head>
 
 <body>
     <h1>Courses</h1>
+    <nav>
+        <a href="/topics">Topics</a>
+        <a href="/questions">All Questions</a>
+    </nav>
 
     <h2>List of all courses</h2>
 
-    <table style="width:100%">
+    <table class="listing">
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Delet this</th>
+            <th class="id-column">ID</th>
+            <th class="text-column">Name</th>
+            <th class="control-column">Controls</th>
         </tr>
         <tr th:each="course : ${courses}">
-            <td th:text="${course.id}"></td>
-            <td>
+            <td class="id-column" th:text="${course.id}"></td>
+            <td class="text-column">
                 <a th:href="${course.infoUrl}" th:text="${course.name}">Course</a>
             </td>
-            <td>
+            <td class="control-column">
                 <form method="POST" th:action="${course.deleteUrl}">
                     <input type="submit" value="Delete" />
                 </form>
             </td>
         </tr>
+        <tr>
+            <form method="POST" action="/courses">
+                <td class="id-column">Add</td>
+                <td class="text-column">
+                    <input type="text" name="name" />
+                </td>
+                <td class="control-column">
+                    <input type="submit" value="Add" /><br />
+                </td>
+            </form>
+        </tr>
     </table>
-
-    <h2>Controls</h2>
-    <form method="POST" action="/courses">
-        <span>Add a new course:</span><br />
-        <input type="text" name="name" />
-        <input type="submit" value="Add" /><br />
-    </form>
 </body>
 
 </html>

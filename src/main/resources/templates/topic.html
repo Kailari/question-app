@@ -6,29 +6,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title th:text="'Topic: ' + ${topic.name}">Topic</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--link rel="stylesheet" type="text/css" media="screen" href="main.css" /-->
+    <link rel="stylesheet" type="text/css" media="screen" href="../public/styles/main.css" th:href="'/styles/main.css'" />
 </head>
 
 <body>
-    <h1 th:text="${topic.name}">Topic name</h1>
+    <h1 th:text="'Topic: ' + ${topic.name}">Topic</h1>
     <a href="/topics">Topics</a>
 
     <h2>Questions on this topic</h2>
 
-    <table style="width:100%">
+    <table class="listing">
         <tr>
-            <th>ID</th>
-            <th>Course</th>
-            <th>Question</th>
-            <th>Delet this</th>
+            <th class="id-column">ID</th>
+            <th class="name-column">Course</th>
+            <th class="text-column">Question</th>
+            <th class="control-column">Controls</th>
         </tr>
         <tr th:each="question : ${questions}">
-            <td th:text="${question.id}"></td>
-            <td th:text="${question.course}"></td>
-            <td>
+            <td class="id-column" th:text="${question.id}"></td>
+            <td class="name-column">
+                <a th:href="${question.course.infoUrl}" th:text="${question.course}"></a>
+            </td>
+            <td class="text-column">
                 <a th:href="${question.infoUrl}" th:text="${question.question}">Course</a>
             </td>
-            <td>
+            <td class="control-column">
                 <form method="POST" th:action="${question.deleteUrl} + '?redirect=/topics/' + ${topic.id}">
                     <input type="submit" value="Delete" />
                 </form>
@@ -36,17 +38,17 @@
         </tr>
         <tr>
             <form method="POST" th:action="${addAction}">
-                <td>Add new</td>
-                <td>
+                <td class="id-column">Add</td>
+                <td class="name-column">
                     <select name="course_id">
                         <option value="">Select Course</option>
                         <option th:each="course : ${courses}" th:value="${course.id}" th:text="${course.name}"></option>
                     </select>
                 </td>
-                <td>
+                <td class="text-column">
                     <input type="text" name="question" />
                 </td>
-                <td>
+                <td class="control-column">
                     <input type="submit" name="Add" />
                 </td>
             </form>

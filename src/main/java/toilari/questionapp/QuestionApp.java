@@ -30,6 +30,8 @@ public class QuestionApp {
         QuestionDao questions = new QuestionDao(db, courses, topics);
         AnswerDao answers = new AnswerDao(db, questions);
 
+        Spark.staticFiles.location("/public");
+
         Spark.get("/questions", QuestionsPage.getFullQuestionList(questions, courses, topics), new ThymeleafTemplateEngine());
         Spark.post("/questions", QuestionsPage.postAddQuestion(questions, courses, topics));
 

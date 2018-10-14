@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title th:text="'Question: ' + ${question.question}"></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="../public/styles/main.css" th:href="'/styles/main.css'" />
 </head>
 
 <body>
@@ -24,21 +25,22 @@
         </tr>
     </table>
 
+
     <h2>Answers</h2>
 
-    <table style="width:100%">
+    <table class="listing">
         <tr>
-            <th>ID</th>
-            <th>Text</th>
-            <th>Correct</th>
-            <th>Controls</th>
+            <th class="id-column">ID</th>
+            <th class="text-column">Text</th>
+            <th class="id-column">Correct</th>
+            <th class="control-column">Controls</th>
         </tr>
         <tr th:each="answer : ${answers}">
-            <td th:text="${answer.id}"></td>
-            <td th:text="${answer.text}"></td>
-            <td th:text="${answer.correct} ? 'Correct' : 'Wrong'">Course</a>
+            <td class="id-column" th:text="${answer.id}"></td>
+            <td class="text-column" th:text="${answer.text}"></td>
+            <td class="id-column" th:text="${answer.correct} ? 'Correct' : 'Wrong'">Course</a>
             </td>
-            <td>
+            <td class="control-column">
                 <form method="POST" th:action="${answer.deleteUrl} + '?redirect=/questions/' + ${question.id}">
                     <input type="submit" value="Delete" />
                 </form>
@@ -46,14 +48,14 @@
         </tr>
         <tr>
             <form method="POST" th:action="${addAction}">
-                <td>Add new</td>
-                <td>
+                <td class="id-column">Add</td>
+                <td class="text-column">
                     <input type="text" name="text" />
                 </td>
-                <td>
+                <td class="id-column">
                     <input type="checkbox" name="correct" value="correct" />
                 </td>
-                <td>
+                <td class="control-column">
                     <input type="submit" name="Add" />
                 </td>
             </form>

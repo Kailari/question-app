@@ -1,0 +1,45 @@
+:root {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.listing {
+    width: 100%;
+    background: #888888;
+}
+
+.listing th {
+    background: #AAAAAA;
+}
+
+.listing tr {
+    width: 100%;
+    background: #DDDDDD;
+}
+
+.listing tr:nth-child(2n+1) {
+    background: #CCCCCC;
+}
+
+.id-column {
+    width: 5%
+}
+
+.name-column {
+    width: 15%;
+}
+
+.text-column {
+    width: auto;
+}
+
+.text-column input {
+    width: 100%;
+}
+
+.control-column {
+    width: 5%;
+}
+
+.control-column input {
+    width: 100%;
+}

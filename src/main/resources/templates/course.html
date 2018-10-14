@@ -4,31 +4,31 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Course List</title>
+    <title th:text="'Course: ' + ${course.name}">Course</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--link rel="stylesheet" type="text/css" media="screen" href="main.css" /-->
+    <link rel="stylesheet" type="text/css" media="screen" href="../public/styles/main.css" th:href="'/styles/main.css'" />
 </head>
 
 <body>
-    <h1 th:text="${course.name}">Course name</h1>
+    <h1 th:text="'Course: ' + ${course.name}">Course name</h1>
     <a href="/courses">All courses</a>
 
     <h2>Questions on this course</h2>
 
-    <table style="width:100%">
+    <table class="listing">
         <tr>
-            <th>ID</th>
-            <th>Topic</th>
-            <th>Question</th>
-            <th>Delet this</th>
+            <th class="id-column">ID</th>
+            <th class="name-column">Topic</th>
+            <th class="text-column">Question</th>
+            <th class="control-column">Controls</th>
         </tr>
         <tr th:each="question : ${questions}">
-            <td th:text="${question.id}"></td>
-            <td><a th:href="${question.topic.infoUrl}" th:text="${question.topic}">Topic</a></td>
-            <td>
+            <td class="id-column" th:text="${question.id}"></td>
+            <td class="name-column"><a th:href="${question.topic.infoUrl}" th:text="${question.topic}">Topic</a></td>
+            <td class="text-column">
                 <a th:href="${question.infoUrl}" th:text="${question.question}">Course</a>
             </td>
-            <td>
+            <td class="control-column">
                 <form method="POST" th:action="${question.deleteUrl} + '?redirect=/courses/' + ${course.id}">
                     <input type="submit" value="Delete" />
                 </form>
@@ -36,17 +36,17 @@
         </tr>
         <tr>
             <form method="POST" th:action="${addAction}">
-                <td>Add new</td>
-                <td>
+                <td class="id-column">Add</td>
+                <td class="name-column">
                     <select name="topic_id">
                         <option value="">Select Topic</option>
                         <option th:each="topic : ${topics}" th:value="${topic.id}" th:text="${topic.name}"></option>
                     </select>
                 </td>
-                <td>
+                <td class="text-column">
                     <input type="text" name="question" />
                 </td>
-                <td>
+                <td class="control-column">
                     <input type="submit" name="Add" />
                 </td>
             </form>
