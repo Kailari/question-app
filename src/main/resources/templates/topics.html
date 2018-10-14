@@ -27,7 +27,7 @@
         <tr th:each="topic : ${topics}">
             <td class="id-column" th:text="${topic.id}"></td>
             <td class="text-column">
-                <a th:href="${topic.infoUrl}" th:text="${topic.name}">Topics</a>
+                <a th:href="${topic.infoUrl}" th:text="${topic.name}">Topic</a>
             </td>
             <td class="control-column">
                 <form method="POST" th:action="${topic.deleteUrl}">
@@ -39,7 +39,7 @@
             <form method="POST" action="/topics">
                 <td class="id-column">Add</td>
                 <td class="text-column">
-                    <input type="text" value="name" />
+                    <input type="text" name="name" />
                 </td>
                 <td class="control-column">
                     <input type="submit" value="Add" />
